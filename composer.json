@@ -1,0 +1,19 @@
+"repositories": [
+    {
+        "type": "package",
+        "package": {
+            "name": "conceptrix/wildwestdomainsapi",
+            "version": "dev-master",
+            "source": {
+                "url": "git://github.com/Conceptrix/Godaddy_WildWestDomainsAPI.git",
+                "type": "git",
+                "reference": "master"
+            },
+            "autoload": {
+                "psr-0" : {
+                    "conceptrix\\wildwestdomainsapi" : "src"
+                }
+            }
+        }
+    }
+],
