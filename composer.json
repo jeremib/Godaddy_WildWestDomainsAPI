@@ -1,5 +1,5 @@
 {
-    "name": "conceptrix/wwdapi",
+    "name": "jeremib/wwdapi",
     "autoload": {
         "classmap": ["Godaddy_WildWestDomainsAPI.php"]
     }
