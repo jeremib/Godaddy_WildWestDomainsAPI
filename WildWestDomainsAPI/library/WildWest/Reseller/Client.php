@@ -362,13 +362,12 @@ class WildWest_Reseller_Client extends SoapClient
 
         $response = $this->__call('Info', array($data));
         $xml  = new SimpleXMLElement($response->InfoResult);
-
-        if (empty($xml->resdata)) {
+        if (isset($xml->result->msg->error)) {
             throw new WildWest_Reseller_Exception((string)$xml->result->msg->error, (string)$xml->result['code']);
         }
 
         $info = array();
-        foreach ($xml->resdata->info[0]->attributes() as $k => $v) {
+        foreach ($xml->attributes() as $k => $v) {
             $info[$k] = (string)$v;
         }
 
