@@ -33,4 +33,21 @@ class Godaddy_WildWestDomainsAPI extends \WildWest_Reseller_Client{
             return (string)$xml->code == 1000;
         }
     }
+
+    public function CancelDomain($resource_id, $type = 'immediate') {
+        $data = array(
+            'credential' => $this->_credential,
+            'sCLTRID' => $this->getClientTransactionId(),
+            'sType' => $type,
+            'sIDArray' => array($resource_id)
+        );
+
+        $response = $this->__call('Cancel', array($data));
+        $xml  = new SimpleXMLElement($response->CancelResult);
+        if (empty($xml->resdata)) {
+            throw new WildWest_Reseller_Exception((string)$xml->result->msg, (string)$xml->result['code']);
+        } else {
+            return (string)$xml->code == 1000;
+        }
+    }
 }
