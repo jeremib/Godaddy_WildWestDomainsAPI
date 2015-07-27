@@ -50,4 +50,24 @@ class Godaddy_WildWestDomainsAPI extends \WildWest_Reseller_Client{
             return (string)$xml->code == 1000;
         }
     }
+
+    public function ManageTransfer($resource_id, $action = 'sendEmail') {
+        $data = array(
+            'credential' => $this->_credential,
+            'sCLTRID' => $this->getClientTransactionId(),
+            'sAction' => $action,
+            'sIDArray' => array($resource_id)
+        );
+
+        $response = $this->__call('ManageTransfer', array($data));
+        $xml  = new SimpleXMLElement($response->CancelResult);
+        print_r($xml); exit;
+        if (empty($xml->resdata)) {
+            throw new WildWest_Reseller_Exception((string)$xml->result->msg, (string)$xml->result['code']);
+        } else {
+            return (string)$xml->code == 1000;
+        }
+    }
+
+
 }
