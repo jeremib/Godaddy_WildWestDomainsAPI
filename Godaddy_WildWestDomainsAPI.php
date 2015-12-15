@@ -51,18 +51,36 @@ class Godaddy_WildWestDomainsAPI extends \WildWest_Reseller_Client{
         }
     }
 
-    public function ManageTransfer($resource_id, $action = 'sendEmail') {
+    public function ManageTransfer(array $domains = array(), $action = 'sendEmail') {
         $data = array(
             'credential' => $this->_credential,
             'sCLTRID' => $this->getClientTransactionId(),
             'sAction' => $action,
-            'sIDArray' => array($resource_id)
+            'domainArray' => $domains,
         );
 
+
         $response = $this->__call('ManageTransfer', array($data));
-        $xml  = new SimpleXMLElement($response->CancelResult);
-        print_r($xml); exit;
+        $xml  = new SimpleXMLElement($response->ManageTransferResult);
         if (empty($xml->resdata)) {
+            throw new WildWest_Reseller_Exception((string)$xml->result->msg, (string)$xml->result['code']);
+        } else {
+            return (string)$xml->code == 1000;
+        }
+    }
+
+    public function SetDomainLocking(array $domains = array(), $lock_val = 'yes') {
+        $data = array(
+            'credential' => $this->_credential,
+            'sCLTRID' => $this->getClientTransactionId(),
+            'sLock' => $lock_val,
+            'domainArray' => $domains,
+        );
+
+
+        $response = $this->__call('SetDomainLocking', array($data));
+        $xml  = new SimpleXMLElement($response->SetDomainLockingResult);
+        if (!isset($xml->resdata) && empty($xml->resdata)) {
             throw new WildWest_Reseller_Exception((string)$xml->result->msg, (string)$xml->result['code']);
         } else {
             return (string)$xml->code == 1000;
