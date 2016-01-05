@@ -297,6 +297,10 @@ class WildWest_Reseller_Client extends SoapClient
             throw new WildWest_Reseller_Exception($xml->response->msg->error, $xml->response['code']);
         }
 
+        if ( $xml->result['code'] != 1000 ) {
+            throw new WildWest_Reseller_Exception($xml->result->msg);
+        }
+
         return array(
             'user' => (string)$xml['user'],
             'svTRID' => (string)$xml['svTRID'],

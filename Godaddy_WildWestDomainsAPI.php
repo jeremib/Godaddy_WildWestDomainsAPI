@@ -45,6 +45,7 @@ class Godaddy_WildWestDomainsAPI extends \WildWest_Reseller_Client{
         $response = $this->__call('Cancel', array($data));
         $xml  = new SimpleXMLElement($response->CancelResult);
 
+
         if (empty($xml->resdata)) {
             throw new WildWest_Reseller_Exception((string)$xml->result->msg, (string)$xml->result['code']);
         } else {
