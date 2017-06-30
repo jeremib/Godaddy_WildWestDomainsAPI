@@ -95,4 +95,31 @@ class Godaddy_WildWestDomainsAPI extends \WildWest_Reseller_Client{
     }
 
 
+    public function DomainRedemption($shopper, $items, $resourceid, $domain) {
+
+        list($domain, $tld) = explode(".", strtolower($domain), 2);
+
+
+        $data = array(
+            'sCLTRID'       => $this->getClientTransactionId(),
+            'credential'    => $this->_credential,
+            'shopper'       => $shopper,
+            'items'         => [[
+                'order'         => $items,
+                'resourceid'    => $resourceid,
+                'sld'           => $domain,
+                'tld'           => $tld
+            ]],
+            'sROID'         => '',
+        );
+
+
+        $response = $this->__call('OrderDomainRedemptions', array($data));
+        $xml  = new SimpleXMLElement($response->OrderDomainRedemptionsResult);
+        if (!isset($xml->resdata) && empty($xml->resdata)) {
+            throw new WildWest_Reseller_Exception((string)$xml->result->msg, (string)$xml->result['code']);
+        } else {
+            return (string)$xml->code == 1000;
+        }
+    }
 }
